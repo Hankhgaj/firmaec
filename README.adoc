@@ -11,7 +11,7 @@ Los siguientes pasos le permitirán obtener una copia del proyecto para correrla
 
 === Java
 
-Se necesita instalar _Java Development Kit (JDK) 11_ para compilar y correr la aplicación.
+Se necesita instalar _Java Development Kit (JDK) 11_ para compilar y correr la aplicación. Asegurarse de configurar la variable de entorno JAVA_HOME
 
 Apache maven https://maven.apache.org/download.cgi
 
