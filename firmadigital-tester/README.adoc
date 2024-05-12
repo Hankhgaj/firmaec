@@ -1,0 +1,57 @@
+= FirmaEC: firmadigital-tester
+
+== Introducción
+
+Es un proyecto emulador de sistemas requirientes
+
+== Prerequisitos
+
+=== PHP
+
+Se debe instalar PHP, la versión utilizada para este proyecto es la 8.0.27
+
+[source, bash]
+----
+$ sudo dnf -y install php php-soap php-json
+----
+
+=== Apache
+
+Se debe instalar el servidor HTTPD Apache, la versión utilizada para este proyecto es la 2.4.53
+
+[source, bash]
+----
+$ sudo dnf -y install httpd
+----
+
+=== GIT
+
+Se debe instalar el GIT para clonar el proyecto _firmadigital-tester_
+
+[source, bash]
+----
+$ sudo dnf -y install git
+----
+
+Después descargar el proyecto
+
+[source, bash]
+----
+$ cd /var/www/
+$ git clone https://minka.gob.ec/mintel/ge/firmaec/firmadigital-tester.git
+----
+
+Finalmente, en caso de necesitar ayuda adicional, se encuentra el archivo https://minka.gob.ec/mintel/ge/firmaec/firmadigital-tester/-/blob/master/L%C3%A9eme%20para%20configurar[Léeme para configurar] dentro del proyecto _firmadigital-tester_.
+
+== Colaborar
+
+Para colaborar se puede enviar un _Merge Request_ utilizando la plataforma https://minka.gob.ec/mintel/ge/firmaec[Minka].
+
+== Versiones
+
+Usamos https://minka.gob.ec/mintel/ge/estandares/-/blob/master/versionamiento.md[Estandares] para versionar.
+
+== Autores
+
+* *Ricardo Arguello* - *Desarrollo* - http://www.soportelibre.com[Soporte Libre]
+* *Misael Fernández* - *Desarrollo* - misael.fernandez.correa@gmail.com

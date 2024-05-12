@@ -1,0 +1,66 @@
+#instalar HTTPD
+yum -y install httpd
+#instalar php-soap
+yum install php-soap
+#editar el siguiente fichero
+vim /etc/httpd/conf.d/firmadigital.gob.ec.conf
+<VirtualHost *:80>
+        ServerAdmin misael.fernandez@mintel.gob.ec
+        DocumentRoot /var/www/firmadigital-tester
+        ServerName firmadigital.gob.ec
+        ServerAlias firmadigital.gob.ec
+        EnableSendfile off
+        LogLevel info
+        ErrorLog /var/log/httpd/firmadigital.gob.ec-error_log
+        CustomLog /var/log/httpd/firmadigital.gob.ec-access_log combined
+        LogLevel info
+        <Directory "/var/www/html">
+                AuthType Basic
+                AuthName "Restricted Content"
+                AuthUserFile /etc/httpd/conf.d/.htpasswd
+                SetEnvIf Request_URI "^/soap/*" allow
+                SetEnvIf Request_URI "^/rest/*" allow
+                Order allow,deny
+                Require valid-user
+                Allow from env=allow
+                Deny from env=!allow
+                Satisfy any
+        </Directory>
+</VirtualHost>
+
+#aumentar tamaño para subir archivos
+vim /etc/php.ini
+upload_max_filesize = 8M #buscar y reemplazar
+post_max_size = 8M #buscar y reemplazar 
+
+#crear contraseña de acceso
+htpasswd -c /etc/httpd/conf.d/.htpasswd firmaEc
+#reiniciar apache
+service httpd restart
+#revisar status
+apachectl -S
+
+#archivos de configuración transversal
+vim /var/www/firmadigital-tester/transversal/propiedades.config
+vim /var/www/firmadigital-tester/transversal/upload.php
+
+#archivos de configuración soap
+vim /var/www/firmadigital-tester/transversal/upload.php
+
+#archivos de configuración rest
+vim /var/www/firmadigital-tester/rest/api_rest.php
+vim /var/www/firmadigital-tester/.htaccess
+
+#permisos de lectura
+chmod 644 /var/www/firmadigital-tester/.htaccess
+#permisos apache a la carpeta
+chown apache:apache -R /var/www/firmadigital-tester/
+
+#instalar crontab
+yum install cronie
+#listar procesos
+crontab -l
+#editar procesos
+crontab -e
+*/5 * * * * rm -rf /var/www/firmadigital-tester/soap/tmp/* #se ejecuta cada 5 minutos
+
