@@ -35,9 +35,13 @@ ServicioApiUrl.java
     private static final String REST_SERVICE_URL = "http://127.0.0.1:8080/servicio/apiurl";
 
 Tambien se debe modificar https://minka.gob.ec/mintel/ge/firmaec/firmadigital-servicio el archivo ServicioAppFirmarDocumento.java Ejemplo:
+[source, bash]
+----
     private final String REST_SERVICE_URL_PREPRODUCCION = "https://impws.firmadigital.gob.ec/servicio/documentos/"; //Cambiar a la url de nuestro servidor
     private final String REST_SERVICE_URL_DESARROLLO = "http://127.0.0.1:8080/servicio/documentos"; //Cambiar a la url de nuestro localhost
     private final String REST_SERVICE_URL_PRODUCCION = "http://wsmobile.firmadigital.gob.ec:8080/servicio/documentos/"; //Cambiar a la url de nuestro servidor
+----
+
 == Compilar
 
 Se debe compilar firmadigital-api usando el siguiente comando:
