@@ -2,6 +2,7 @@
 Implementacion de firma ec descentralizado, ejemplo en windows
 El proyecto firma ec lo pueden obtener del siguiente enlace
 https://minka.gob.ec/mintel/ge/firmaec
+
 == Introducción
 
 Los siguientes pasos le permitirán obtener una copia del proyecto para correrla en la máquina local para propósitos de desarrollo y pruebas.
@@ -68,6 +69,8 @@ $ mvn clean package
 
 Se para crear la base de datos ejecutamos creamos y ejecutamos el siguiente script .bat considerando que el usuario y contraseña de postgres es firmadigital (se puede cambiar)
 
+Considerar los registros VALUES ('pruebas', 'http://localhost/firmadigital/tester/rest/api_rest.php', '%API_KEY_HASH%', 'pruebas', 'pruebas') segun sea nuestro caso, en el caso de apikey se debe configurar en upload.php segun el alchivo keys.txt generado y para apikeyrest se debe configurar en el archivo api_rest.php en la linea header("X-API-KEY:pruebas");
+
 [source, bash]
 ----
 @echo off
@@ -132,5 +135,8 @@ jboss-cli.bat --command="/subsystem=datasources/jdbc-driver=postgresql:add(drive
 jboss-cli.bat --command="data-source add --name=FirmaDigitalDS --jndi-name=java:/FirmaDigitalDS --driver-name=postgresql --connection-url=jdbc:postgresql://localhost:5432/firmadigital --user-name=firmadigital --password=firmadigital --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"
 jboss-cli.bat --command="run-batch"
 ----
+
+== Despliegue
+Finalmente se debe cargar los archivos compilador .war en wildfly deployments, ejecutar firmadigitaltester
 
 
