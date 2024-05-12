@@ -141,6 +141,6 @@ jboss-cli.bat --command="run-batch"
 ----
 
 == Despliegue
-Finalmente se debe cargar los archivos compilador .war en wildfly deployments, ejecutar firmadigitaltester
+Finalmente se debe cargar los archivos compilador .war en wildfly deployments, ejecutar firmadigitaltester con xampp
 
 
