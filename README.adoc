@@ -13,11 +13,15 @@ Los siguientes pasos le permitirán obtener una copia del proyecto para correrla
 
 Se necesita instalar _Java Development Kit (JDK) 11_ para compilar y correr la aplicación.
 
-Apache maven
+Apache maven https://maven.apache.org/download.cgi
 
-Wildfly
+Wildfly https://www.wildfly.org/downloads/
 
-Xampp
+Xampp https://www.apachefriends.org/es/index.html
+
+PostgreSQL https://www.postgresql.org/download/
+
+JDBC postgreSQL https://jdbc.postgresql.org/download/ 
 
 === Maven
 
