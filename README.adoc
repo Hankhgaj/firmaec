@@ -11,6 +11,122 @@ Los siguientes pasos le permitirán obtener una copia del proyecto para correrla
 === Java
 
 Se necesita instalar _Java Development Kit (JDK) 11_ para compilar y correr la aplicación.
+
 Apache maven
+
 Wildfly
+
 Xampp
+
+=== Maven
+
+Para compilar y empaquetar se utiliza http://maven.apache.org[Apache Maven].
+
+En _Microsoft Windows_ se debe descargar e instalar siguiendo las instrucciones de instalación de https://maven.apache.org/install.html[Apache Maven]. (Agregar a variables de entorno PATH)
+
+Se debe modificar https://minka.gob.ec/mintel/ge/firmaec/firmadigital-api cambiando las url de los archivos ServicioApiUrl.java ServicioAppFirmarDocumento.java ServicioVersion.java ServicioFirmaDigital.java ServicioFechaHora.java ServicioCertificado.java ServicioAppVerificarDocumento.java ServicioAppValidarCertificadoDigital.java ServicioAppFirmarDocumentoTransversal.javaapuntando a nuestro servidor, Ejemplo:
+
+ServicioApiUrl.java
+
+// Cambiar Servicio REST interno
+    // private static final String REST_SERVICE_URL = "https://ws.firmadigital.gob.ec/servicio/apiurl";
+
+    // A
+    private static final String REST_SERVICE_URL = "http://127.0.0.1:8080/servicio/apiurl";
+
+Tambien se debe modificar https://minka.gob.ec/mintel/ge/firmaec/firmadigital-servicio el archivo ServicioAppFirmarDocumento.java Ejemplo:
+    private final String REST_SERVICE_URL_PREPRODUCCION = "https://impws.firmadigital.gob.ec/servicio/documentos/"; //Cambiar a la url de nuestro servidor
+    private final String REST_SERVICE_URL_DESARROLLO = "http://127.0.0.1:8080/servicio/documentos"; //Cambiar a la url de nuestro localhost
+    private final String REST_SERVICE_URL_PRODUCCION = "http://wsmobile.firmadigital.gob.ec:8080/servicio/documentos/"; //Cambiar a la url de nuestro servidor
+== Compilar
+
+Se debe compilar firmadigital-api usando el siguiente comando:
+
+[source, bash]
+----
+$ mvn clean package
+----
+Se debe compilar firmadigital-libreria usando el siguiente comando:
+
+[source, bash]
+----
+$ mvn clean install
+----
+
+Se debe compilar firmadigital-servicio usando el siguiente comando:
+
+[source, bash]
+----
+$ mvn clean package
+----
+
+== Configurar base de datos
+
+Se para crear la base de datos ejecutamos creamos y ejecutamos el siguiente script .bat considerando que el usuario y contraseña de postgres es firmadigital (se puede cambiar)
+
+[source, bash]
+----
+@echo off
+
+REM Genera una cadena aleatoria de longitud 32 para el API KEY
+setlocal enabledelayedexpansion
+set "API_KEY="
+for /l %%i in (1,1,32) do (
+    set /a "char = !random! %% 94 + 33"
+    for %%a in (!char!) do set "API_KEY=!API_KEY!%%a"
+)
+
+REM Calcula el hash SHA-256 del API KEY
+echo %API_KEY% > temp.txt
+certutil -hashfile temp.txt SHA256 | findstr /R "^[0-9a-fA-F]*$" > hash.txt
+set /p API_KEY_HASH=<hash.txt
+
+REM Guardar el API KEY y su hash SHA-256 en un archivo de texto
+echo El API-KEY a utilizar es %API_KEY% > keys.txt
+echo El HASH-256 del API-KEY, a insertar en la base de datos, es %API_KEY_HASH% >> keys.txt
+
+REM Crear un archivo temporal con los comandos SQL
+echo CREATE DATABASE firmadigital; > temp.sql
+echo ALTER DATABASE firmadigital OWNER TO firmadigital; >> temp.sql
+echo GRANT ALL PRIVILEGES ON DATABASE firmadigital TO firmadigital; >> temp.sql
+echo \connect firmadigital; >> temp.sql
+echo CREATE TABLE IF NOT EXISTS sistema (id SERIAL PRIMARY KEY, nombre VARCHAR(100), url VARCHAR(255), apikey VARCHAR(64), descripcion VARCHAR(255),apikeyrest VARCHAR(64)); >> temp.sql
+echo INSERT INTO sistema(nombre,url,apikey,descripcion,apikeyrest) VALUES ('pruebas', 'http://localhost/firmadigital/tester/rest/api_rest.php', '%API_KEY_HASH%', 'pruebas', 'pruebas'); >> temp.sql
+
+REM Ejecutar los comandos SQL utilizando psql
+psql -U postgres -f temp.sql
+
+REM Eliminar archivos temporales
+del temp.txt
+del hash.txt
+del temp.sql
+
+pause
+
+----
+
+== Configurar datasource en wildfly
+
+Se debe descargar JDBC.jar https://jdbc.postgresql.org/download/ en este caso la version java 8
+
+Para configurar wildfly creamos y ejecutamos el siguiente script .bat considerando la ubicacion del archivo jar POSTGRESQL_JAR=C:\Users\Henry\Desktop\FIRMA EC\postgresql-42.7.3.jar y el directorio de wildfly cd /d "C:\wildfly-31.0.1.Final\bin" segun la ubicacion correspondiente
+
+[source, bash]
+----
+@echo off
+
+rem Establecer la ubicación del archivo JAR de PostgreSQL
+set POSTGRESQL_JAR=C:\Users\Henry\Desktop\FIRMA EC\postgresql-42.7.3.jar
+
+rem Navegar al directorio bin de WildFly
+cd /d "C:\wildfly-31.0.1.Final\bin"
+
+rem Ejecutar el script de JBoss CLI
+jboss-cli.bat --command="batch"
+jboss-cli.bat --command="module add --name=org.postgresql --resources=%POSTGRESQL_JAR% --dependencies=javax.api,javax.transaction.api"
+jboss-cli.bat --command="/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)"
+jboss-cli.bat --command="data-source add --name=FirmaDigitalDS --jndi-name=java:/FirmaDigitalDS --driver-name=postgresql --connection-url=jdbc:postgresql://localhost:5432/firmadigital --user-name=firmadigital --password=firmadigital --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"
+jboss-cli.bat --command="run-batch"
+----
+
+
