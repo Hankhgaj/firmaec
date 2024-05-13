@@ -102,13 +102,13 @@
 		$select = $_POST['estampado'];
 		switch ($select) {
 			case 'qr':
-				$estampado = "&llx=260&lly=91&estampado=QR&razon=firmaEC";
+				$estampado = "&llx=".$_POST['posX']."&lly=".$_POST['posY']."&estampado=QR&razon=firmaEC";
 				break;
 			case 'information1':
-				$estampado = "&llx=260&lly=91&estampado=information1";
+				$estampado = "&llx=".$_POST['posX']."&lly=".$_POST['posY']."&estampado=information1";
 				break;
 			case 'information2':
-				$estampado = "&llx=260&lly=91&estampado=information2";
+				$estampado = "&llx=".$_POST['posX']."&lly=".$_POST['posY']."&estampado=information2";
 				break;
 			case 'invisible':
 				$estampado = "";
