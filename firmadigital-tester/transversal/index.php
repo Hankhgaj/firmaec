@@ -95,6 +95,22 @@
                     </tr>
                     <tr>
                         <td>
+                                <label for="posX">Posición horizontal estampado X: </label>
+                        </td>
+                        <td>
+                                <input type="number" name="posX" id="posX" step="1" value="105" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                                <label for="posY">Posición Vertical estampado Y: </label>
+                        </td>
+                        <td>
+                                <input type="number" name="posY" id="posY" step="1" value="148" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                                 <label for="fileToUpload">Documento: </label>
                         </td>
                         <td>
