@@ -5,7 +5,7 @@ header("X-API-KEY:pruebas");  // X-API-KEY debe ser el valor de base de datos {a
 $json = file_get_contents('php://input');
 if ($json!="" && $_SERVER["REQUEST_METHOD"]=="POST"){
         $data=json_decode($json);
-        $carpeta = "C:/xampp/htdocs/firmadigital-tester/soap/tmp/".date('YmdHis');  // --> Carpeta donde se guardan los archivos local 👀
+        $carpeta = "C:/xampp/htdocs/firmadigital-tester/rest/firmados/".date('YmdHis');  // --> Carpeta donde se guardan los archivos local 👀
         if(!file_exists($carpeta)){
                 mkdir($carpeta,0777,true);
         }
