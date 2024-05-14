@@ -23,7 +23,7 @@ echo ALTER DATABASE firmadigital OWNER TO firmadigital; >> temp.sql
 echo GRANT ALL PRIVILEGES ON DATABASE firmadigital TO firmadigital; >> temp.sql
 echo \connect firmadigital; >> temp.sql
 echo CREATE TABLE IF NOT EXISTS sistema (id SERIAL PRIMARY KEY, nombre VARCHAR(100), url VARCHAR(255), apikey VARCHAR(64), descripcion VARCHAR(255),apikeyrest VARCHAR(64)); >> temp.sql
-echo INSERT INTO sistema(nombre,url,apikey,descripcion,apikeyrest) VALUES ('pruebas', 'http://localhost/firmadigital/tester/rest/api_rest.php', '%API_KEY_HASH%', 'pruebas', 'pruebas'); >> temp.sql
+echo INSERT INTO sistema(nombre,url,apikey,descripcion,apikeyrest) VALUES ('pruebas', 'http://localhost/firmadigital-tester/rest/api_rest.php', '%API_KEY_HASH%', 'pruebas', 'pruebas'); >> temp.sql
 
 REM Ejecutar los comandos SQL utilizando psql
 psql -U postgres -f temp.sql
